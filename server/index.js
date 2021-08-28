@@ -1,13 +1,11 @@
 require('dotenv').config({ path: './.env' })
 require('./database/db')
-
 const express = require('express')
-
 const cors = require('cors')
-const app = express()
+const fileUpload = require('express-fileupload')
 const cookieParser = require('cookie-parser')
 
-
+const app = express()
 const corsOptions = {
     origin: 'http://localhost:3003', 
     credentials: true,
@@ -19,8 +17,15 @@ app.use(cookieParser())
 app.use(express.json())
 
 
+app.use(fileUpload({
+    useTempFiles: true
+}))
+
+//Routes
+app.use('/user', require('./routes/userRouter'))
+
 
 
 //listen server
-const port = process.env.PORT || 4000
+const port =  4000
 app.listen(port, () => console.log(`Example app listening on port ${port}`))
